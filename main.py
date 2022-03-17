@@ -9,11 +9,9 @@ def matches_at_position(text, pattern, position):
 
 
 def naive_algorithm(text, pattern):
-    for i in range(0, len(text) - len(pattern)):
+    for i in range(0, len(text) - len(pattern) + 1):
         if matches_at_position(text, pattern, i):
             print("Naive - found at position: " + str(i))
-            return
-    print("Naive - not found")
 
 
 def sunday_algorithm(text, pattern):
@@ -25,17 +23,14 @@ def sunday_algorithm(text, pattern):
     while i <= (len(text) - len(pattern)):
         if matches_at_position(text, pattern, i):
             print("Sunday - found at position: " + str(i))
-            return
         i += len(pattern)
         if i < len(text):
             i -= last_position.get(text[i], -1)
 
-    print("Sunday - not found")
-
 
 if __name__ == '__main__':
     example_text = "abhisavdiuatsdvyhasvdguavlsdtgqcwdcwuidbhiuasgxciutfuraycvduiwboduqbhuyvbgiTC tfwdaOY"
-    example_pattern = "x"
+    example_pattern = "Y"
 
     naive_algorithm(example_text, example_pattern)
     sunday_algorithm(example_text, example_pattern)
