@@ -12,12 +12,16 @@ def matches_at_position(text, pattern, position):
 
 
 def naive_algorithm(text, pattern):
+    results = []
     for i in range(0, len(text) - len(pattern) + 1):
         if matches_at_position(text, pattern, i):
-            print(f"Naive - found at position: {i}")
+            results.append(i)
+
+    return results
 
 
 def sunday_algorithm(text, pattern):
+    results = []
     pattern_len = len(pattern)
     text_len = len(text)
 
@@ -28,13 +32,16 @@ def sunday_algorithm(text, pattern):
     i = 0
     while i <= (text_len - pattern_len):
         if matches_at_position(text, pattern, i):
-            print(f"Sunday - found at position: {i}")
+            results.append(i)
         i += pattern_len
         if i < text_len:
             i -= last_position.get(text[i], -1)
 
+    return results
+
 
 def boyer_moore_algorithm(text, pattern):
+    results = []
     pattern_len = len(pattern)
     text_len = len(text)
 
@@ -48,18 +55,18 @@ def boyer_moore_algorithm(text, pattern):
         while (j > -1) and (pattern[j] == text[i + j]):
             j -= 1
         if j == -1:
-            print(f"Boyer–Moore - found at position: {i}")
+            results.append(i)
             i += 1
         else:
             i += max(1, j - last_position.get(text[i + j], -1))
+
+    return results
 
 
 if __name__ == '__main__':
     example_text = "Yabhisavd iuatsd&vyhasv#$dguavlsdtgqcwdc??wuidbh iuasgxc~iut,furaycvduiwboduqbhuyvbgiTC_tf/*&7wdaOY"
     example_pattern = "bh"
 
-    naive_algorithm(example_text, example_pattern)
-    print("*" * 50)
-    sunday_algorithm(example_text, example_pattern)
-    print("*" * 50)
-    boyer_moore_algorithm(example_text, example_pattern)
+    print(f"Naive algorithm: {naive_algorithm(example_text, example_pattern)}")
+    print(f"Sunday algorithm: {sunday_algorithm(example_text, example_pattern)}")
+    print(f"Boyer-Moore algorithm: {boyer_moore_algorithm(example_text, example_pattern)}")
