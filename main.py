@@ -1,8 +1,11 @@
 def matches_at_position(text, pattern, position):
-    if position < 0 or position > (len(text) - len(pattern)):
+    pattern_len = len(pattern)
+    text_len = len(text)
+
+    if position < 0 or position > (text_len - pattern_len):
         raise IndexError(f"Invalid value of the 3 argument (\"position\"), position: {position}")
 
-    for i in range(0, len(pattern)):
+    for i in range(0, pattern_len):
         if text[i + position] != pattern[i]:
             return False
     return True
@@ -15,30 +18,33 @@ def naive_algorithm(text, pattern):
 
 
 def sunday_algorithm(text, pattern):
+    pattern_len = len(pattern)
+    text_len = len(text)
+
     last_position = {}
-    for i in range(0, len(pattern)):
+    for i in range(0, pattern_len):
         last_position[pattern[i]] = i
 
     i = 0
-    while i <= (len(text) - len(pattern)):
+    while i <= (text_len - pattern_len):
         if matches_at_position(text, pattern, i):
             print(f"Sunday - found at position: {i}")
-        i += len(pattern)
-        if i < len(text):
+        i += pattern_len
+        if i < text_len:
             i -= last_position.get(text[i], -1)
 
 
 def boyer_moore_algorithm(text, pattern):
+    pattern_len = len(pattern)
+    text_len = len(text)
+
     last_position = {}
-    for i in range(0, len(pattern)):
+    for i in range(0, pattern_len):
         last_position[pattern[i]] = i
 
-    m = len(pattern)
-    n = len(text)
-
     i = 0
-    while i <= (n - m):
-        j = m - 1
+    while i <= (text_len - pattern_len):
+        j = pattern_len - 1
         while (j > -1) and (pattern[j] == text[i + j]):
             j -= 1
         if j == -1:
@@ -49,7 +55,7 @@ def boyer_moore_algorithm(text, pattern):
 
 
 if __name__ == '__main__':
-    example_text = "Yabhisavdiuatsd&vyhasv#$dguavlsdtgqcwdc??wuidbhiuasgxc~iut,furaycvduiwboduqbhuyvbgiTC tf/*&7wdaOY"
+    example_text = "Yabhisavd iuatsd&vyhasv#$dguavlsdtgqcwdc??wuidbh iuasgxc~iut,furaycvduiwboduqbhuyvbgiTC_tf/*&7wdaOY"
     example_pattern = "bh"
 
     naive_algorithm(example_text, example_pattern)
